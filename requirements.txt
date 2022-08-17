@@ -4,3 +4,5 @@ streamlit
 matplotlib
 plotly
 statsmodels
+scipy
+kneed
