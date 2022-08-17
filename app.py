@@ -48,6 +48,9 @@ def main():
 
 		merged, slopes, intercepts = analyze(df)
 
+		if sum(slopes < 0) > 0:
+			st.warning("Some rates infered from the linear fit were found to be negative.")
+
 		results_table = collate_results(slopes, intercepts, df)
 
 
