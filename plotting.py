@@ -39,13 +39,18 @@ def plot_rfu_panel(merged, ret=True):
             ),
             row=row, col=col
         )
+
+        line_color = 'black'
+        if each_df['Linear Fit'][0] != each_df['Linear Fit'].min():
+            line_color='red'
+
         fig.add_trace(
             go.Scatter(
                 x=each_df['Cycle'],
                 y=each_df['Linear Fit'],
                 mode="lines+markers",
                 hoverinfo='skip',
-                marker=dict(color='black', size=5, opacity=0.7),
+                marker=dict(color=line_color, size=4, opacity=0.7),
 
             ),
             row=row, col=col
