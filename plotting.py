@@ -65,6 +65,7 @@ def plot_rfu_panel(merged, ret=True):
 
 
 def plot_standard_curve(means):
+    print(means)
     y_pred, x, m, c, r = fit_straight_line(means['Conc'], means['RFU (smooth)'])
     fig = px.scatter(means, 'Conc', 'RFU (smooth)',  title=f"Standard Curve")
     fig.add_trace(go.Scatter(x=x, y=y_pred, name='Linear Fit'))
