@@ -21,6 +21,7 @@ def calculate_standard_curve(merged, min_nz, fold_dilutions):
         "RFU (smooth)"
     ].mean().to_frame()
     means['Conc'] = min_nz
+    print(means)
     for well in means.index:
         means.loc[well, 'Conc'] = min_nz * (fold_dilutions ** (6 - well_ranks[well]))
     return means
