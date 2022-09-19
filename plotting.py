@@ -41,8 +41,8 @@ def plot_rfu_panel(merged, ret=True):
         )
 
         line_color = 'black'
-        if each_df['Linear Fit'][0] != each_df['Linear Fit'].min():
-            line_color='red'
+#        if each_df['Linear Fit'][0] != each_df['Linear Fit'].min():
+#            line_color='red'
 
         fig.add_trace(
             go.Scatter(
