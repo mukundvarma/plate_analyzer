@@ -51,7 +51,7 @@ def calculate_linear_region(x, y, sensitivity=0.01):
     kl = KneeLocator(x, y, S=sensitivity)
     knee_index_x = np.where(x == kl.knee)[0][0]
     
-    if knee_index_x < len(x) // 20:
+    if knee_index_x < len(x) // 10:
         knee_index_x = len(x) // 2
 
     return knee_index_x
