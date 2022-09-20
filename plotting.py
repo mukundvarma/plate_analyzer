@@ -1,6 +1,6 @@
 import plotly.express as px
 import plotly.graph_objects as go
-from analysis import fit_straight_line
+from analysis import fit_straight_line, is_background_well
 
 
 def plot_rfu_panel(merged, ret=True):
@@ -23,6 +23,8 @@ def plot_rfu_panel(merged, ret=True):
 
     fig.update_traces(marker_size=2, showlegend=False)
 
+    n_neg = 0
+
     for i, group in enumerate(sorted(merged['group'].unique())):
         row = 4 -  (i // 4)
         col = 1 + (i % 4)
@@ -40,28 +42,33 @@ def plot_rfu_panel(merged, ret=True):
             row=row, col=col
         )
 
-        line_color = 'black'
-#        if each_df['Linear Fit'][0] != each_df['Linear Fit'].min():
-#            line_color='red'
 
-        fig.add_trace(
-            go.Scatter(
-                x=each_df['Cycle'],
-                y=each_df['Linear Fit'],
-                mode="lines+markers",
-                hoverinfo='skip',
-                marker=dict(color=line_color, size=4, opacity=0.7),
+        for well in each_df['Well'].unique():
+            well_df = each_df.query("Well == @well")
+            well_indices = well_df.index
+            if not is_background_well(well) and well_df['Linear Fit'][0] != well_df['Linear Fit'].min():
+                lc = 'red'
+                n_neg += 1
+            else:
+                lc = 'black'
+            fig.add_trace(
+                go.Scatter(
+                    x=well_df['Cycle'],
+                    y=well_df['Linear Fit'],
+                    mode="lines+markers",
+                    hoverinfo='skip',
+                    marker=dict(color=lc, size=4, opacity=0.7),
 
-            ),
-            row=row, col=col
-        )
+                ),
+                row=row, col=col
+            )
 
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_layout(showlegend=False,)
 
     if ret:
-        return fig
+        return fig, n_neg
 
 
 def plot_standard_curve(means):

@@ -53,17 +53,15 @@ def main():
 
 
 		with rfu_tab:
-			
-			if sum(slopes < 0) > 0:
-				st.warning("Some rates infered from the linear fit were found to be negative.")
-			fig1 = plot_rfu_panel(merged, ret=True)
+			fig1, n_neg = plot_rfu_panel(merged, ret=True)
+			if n_neg > 0:
+				st.warning(f"Some ({n_neg}) rates infered from the linear fit were found to be negative.")
 			st.plotly_chart(fig1)
 
 		with sc_tab:
 			fold_dilutions = st.number_input("Fold Dilutions", 2, )
 			min_nz = st.number_input("Min non-zero DNA Amount", value=1.0, min_value=0.0, step=1e-6, format='%.6f')
 			means = calculate_standard_curve(merged, min_nz, fold_dilutions)
-			print(means)
 			standard_slope, r, fig2 = plot_standard_curve(means)
 			st.write(f"Standard Slope: {standard_slope:.3f}")
 			st.write(f"\nR-squared: {r ** 2:.3f}")

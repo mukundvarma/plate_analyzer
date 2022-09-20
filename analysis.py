@@ -21,7 +21,6 @@ def calculate_standard_curve(merged, min_nz, fold_dilutions):
         "RFU (smooth)"
     ].mean().to_frame()
     means['Conc'] = min_nz
-    print(means)
     for well in means.index:
         means.loc[well, 'Conc'] = min_nz * (fold_dilutions ** (6 - well_ranks[well]))
     return means
@@ -152,3 +151,11 @@ def analyze(raw, background_wells=None):
     merged = create_merged_df(data, smoothed, fits, slopes)
 
     return merged, slopes, intercepts
+
+
+def is_background_well(well):
+    is_bkg = False
+    if well.startswith("G") or well.startswith("H") or well.endswith("6") or well.endswith("12"):
+        is_bkg = True
+    return is_bkg
+
